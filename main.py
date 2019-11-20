@@ -1,6 +1,6 @@
+import os
 from configs import config
 from discord.ext import commands
-from os import getenv
 
 bot = commands.Bot(
     command_prefix=config.command_prefix,
@@ -8,7 +8,7 @@ bot = commands.Bot(
     owner_ids=config.owner_ids
 )
 
-token = getenv("DISCORD_TOKEN")
+token = os.getenv("DISCORD_TOKEN")
 
 @bot.event
 async def on_ready():
