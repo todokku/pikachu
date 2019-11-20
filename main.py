@@ -1,21 +1,18 @@
+from configs import config
 from discord.ext import commands
 from os import getenv
 
 bot = commands.Bot(
-    command_prefix="!",
+    command_prefix=config.command_prefix,
     help_command=None,
-    owner_ids=[138491187370786816]
+    owner_ids=config.owner_ids
 )
-
-extensions = [
-    "cogs.games"
-]
 
 token = getenv("DISCORD_TOKEN")
 
 @bot.event
 async def on_ready():
-    for extension in extensions:
+    for extension in config.extensions:
         bot.load_extension(extension)
 
 if __name__ == "__main__":
