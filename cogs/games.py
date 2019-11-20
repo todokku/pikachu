@@ -1,5 +1,5 @@
+import random
 from discord.ext import commands
-from random import choice
 
 class Games(commands.Cog):
 
@@ -11,7 +11,7 @@ class Games(commands.Cog):
         if len(args) == 0:
             number_of_dice = 4
             number_of_sides = 6
-            dice = [str(choice(range(1, number_of_sides + 1))) for d in range(number_of_dice)]
+            dice = [str(random.choice(range(1, number_of_sides + 1))) for d in range(number_of_dice)]
             await ctx.send(", ".join(dice) + "You rolled a **{}**!".format(sum(int(d) for d in dice)))
 
 def setup(bot):
