@@ -1,3 +1,4 @@
+import discord
 import os
 from configs import config
 from discord.ext import commands
@@ -12,6 +13,9 @@ token = os.getenv("DISCORD_TOKEN")
 
 @bot.event
 async def on_ready():
+    status = discord.Game(name="DDU-DU DDU-DU")
+    await bot.change_presence(status=discord.Status.online, activity=status)
+
     for extension in config.extensions:
         bot.load_extension(extension)
 
