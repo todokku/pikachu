@@ -42,7 +42,6 @@ class Level(commands.Cog):
         if user_level > old_level:
             await message.channel.send("<@{}> has leveled up to {}!".format(user_id, user_level))
 
-
         self.db_cursor.execute("UPDATE users SET level = ?, exp = ? WHERE id = ?",
             [user_level, user_exp, str(message.author.id)])
         self.db.commit()
