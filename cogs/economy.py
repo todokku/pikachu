@@ -57,6 +57,5 @@ class Economy(commands.Cog):
 
         await ctx.send("<@{}> is level {} with {} exp.".format(user_id, user_level, user_exp))
 
-
 def setup(bot):
     bot.add_cog(Economy(bot))
