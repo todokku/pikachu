@@ -4,7 +4,7 @@ from configs import config
 from discord.ext import commands
 from sqlite3 import Error
 
-class Economy(commands.Cog):
+class Level(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
@@ -58,4 +58,4 @@ class Economy(commands.Cog):
         await ctx.send("<@{}> is level {} with {} exp.".format(user_id, user_level, user_exp))
 
 def setup(bot):
-    bot.add_cog(Economy(bot))
+    bot.add_cog(Level(bot))
