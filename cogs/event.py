@@ -21,7 +21,11 @@ class Event(commands.Cog):
             self.db_cursor = self.db.cursor()
 
             self.db_cursor.execute("""
-            CREATE TABLE IF NOT EXISTS events (id INTEGER PRIMARY KEY AUTOINCREMENT, guild INTEGER, name TEXT, day TEXT, time TEXT)
+            CREATE TABLE IF NOT EXISTS events (id INTEGER PRIMARY KEY AUTOINCREMENT, guild INTEGER, msg TEXT, day TEXT, time TEXT)
+            """)
+
+            self.db_cursor.execute("""
+            CREATE TABLE IF NOT EXISTS channels (guild INTEGER PRIMARY KEY, channel INTEGER)
             """)
 
         except Error as e:
