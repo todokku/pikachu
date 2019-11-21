@@ -1,3 +1,4 @@
+alert_channel = 585293640495136776
 command_prefix = "!"
 db_name = "bot"
 exp_gained = 10
