@@ -31,7 +31,7 @@ class Level(commands.Cog):
         response = self.db_cursor.fetchone()
 
         if not response:
-            self.db_cursor.execute("INSERT INTO users VALUES(?, ?, ?)", [message.author.id, 1, 0])
+            self.db_cursor.execute("INSERT INTO users VALUES (?, ?, ?)", [message.author.id, 1, 0])
             self.db.commit()
 
         user_id, user_level, user_exp = response
