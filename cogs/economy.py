@@ -10,14 +10,12 @@ class Economy(commands.Cog):
         self.bot = bot
         
         try:
-            cwd = os.path.abspath(os.path.join(os.getcwd(), ".."))
+            cwd = os.path.abspath(os.getcwd())
             db = os.path.join(cwd, config.db_name + ".db")
             self.db = sqlite3.connect(db)
             self.db_cursor = self.db.cursor()
 
-            self.db_cursor.execute("""
-            CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, level INTEGER, exp INTEGER)
-            """)
+            self.db_cursor.execute("""CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, level INTEGER, exp INTEGER)""")
 
         except Error as e:
             print(e)
