@@ -36,10 +36,12 @@ class Level(commands.Cog):
 
         user_id, user_level, user_exp = response
         user_exp += config.exp_gained
-        if int(user_exp / config.exp_leveled) + 1 > user_level:
-            await message.channel.send("<@{}> is now level {}.".format(user_id, user_level + 1))
-
+        old_level = user_level
         user_level = int(user_exp / config.exp_leveled) + 1
+        
+        if user_level > old_level:
+            await message.channel.send("<@{}> has leveled up to {}!".format(user_id, user_level))
+
 
         self.db_cursor.execute("UPDATE users SET level = ?, exp = ? WHERE id = ?",
             [user_level, user_exp, str(message.author.id)])
@@ -55,7 +57,7 @@ class Level(commands.Cog):
 
         user_id, user_level, user_exp = response
 
-        await ctx.send("<@{}> is level {} with {} exp.".format(user_id, user_level, user_exp))
+        await ctx.send("<@{}>, you are level {}!".format(user_id, user_level, user_exp))
 
 def setup(bot):
     bot.add_cog(Level(bot))
