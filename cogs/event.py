@@ -18,7 +18,7 @@ class Event(commands.Cog):
             self.db_cursor = self.db.cursor()
 
             self.db_cursor.execute("""
-            CREATE TABLE IF NOT EXISTS events (id INTEGER PRIMARY KEY AUTOINCREMENT, gid INTEGER, name TEXT, time TEXT, day TEXT)
+            CREATE TABLE IF NOT EXISTS events (id INTEGER PRIMARY KEY AUTOINCREMENT, gid INTEGER, name TEXT, day TEXT, time TEXT)
             """)
 
         except Error as e:
