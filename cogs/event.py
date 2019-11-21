@@ -10,6 +10,9 @@ class Event(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
+        os.environ["TZ"] = "US/Eastern"
+        # os.environ["TZ"] = "US/Central"
+        time.tzset()
 
         try:
             cwd = os.path.abspath(os.getcwd())
@@ -18,7 +21,7 @@ class Event(commands.Cog):
             self.db_cursor = self.db.cursor()
 
             self.db_cursor.execute("""
-            CREATE TABLE IF NOT EXISTS events (id INTEGER PRIMARY KEY AUTOINCREMENT, gid INTEGER, name TEXT, day TEXT, time TEXT)
+            CREATE TABLE IF NOT EXISTS events (id INTEGER PRIMARY KEY AUTOINCREMENT, guild INTEGER, name TEXT, day TEXT, time TEXT)
             """)
 
         except Error as e:
