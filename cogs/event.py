@@ -29,16 +29,6 @@ class Event(commands.Cog):
 
         self.update.start()
 
-    @commands.Cog.listener()
-    async def on_member_join(self, member):
-        if member.guild == self.bot.get_guild(config.guild_id):
-            await member.create_dm()
-            await member.dm_channel.send(file=discord.File('assets/images/op-1.png'))
-            await member.dm_channel.send(file=discord.File('assets/images/op-2.png'))
-            await member.dm_channel.send(file=discord.File('assets/images/op-3.png'))
-            await member.dm_channel.send(file=discord.File('assets/images/op-4.png'))
-            await member.dm_channel.send(file=discord.File('assets/images/op-5.png'))
-
     @tasks.loop(seconds=1.0)
     async def update(self):
         channel = self.bot.get_channel(config.channel_id)
