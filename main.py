@@ -5,8 +5,7 @@ from discord.ext import commands
 
 bot = commands.Bot(
     command_prefix=config.command_prefix,
-    help_command=None,
-    owner_ids=config.owner_ids
+    help_command=None
 )
 
 token = os.getenv("DISCORD_TOKEN")
