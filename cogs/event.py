@@ -25,7 +25,6 @@ class Event(commands.Cog):
             """)
 
             self.send_alert.start()
-            self.update_status.start()
 
         except Error as e:
             print(e)
@@ -45,10 +44,12 @@ class Event(commands.Cog):
         channel = self.bot.get_channel(config.channel_id)
         role = config.role_id
         day = time.strftime("%a")
-        hour = time.strftime("%H")
-        minute = time.strftime("%M")
+        now = time.strftime("%H:%M")
         second = time.strftime("%S")
-        now = hour + ":" + minute
+
+        if second == "00":
+            status = discord.Streaming(name="{} in ToW".format(now), url="https://twitch.tv/topic8")
+            await self.bot.change_presence(status=discord.Status.online, activity=status)
 
         self.db_cursor.execute("SELECT * FROM events WHERE time = ?", [now])
         response = self.db_cursor.fetchall()
@@ -64,14 +65,6 @@ class Event(commands.Cog):
 
             if day in days and second == "00":
                 await channel.send("<@&{}> {}".format(role, message))
-
-    @tasks.loop(seconds=10.0)
-    async def update_status(self):
-        hour = time.strftime("%H")
-        minute = time.strftime("%M")
-
-        status = discord.Streaming(name="{}:{} in ToW".format(hour, minute), url="https://twitch.tv/topic8")
-        await self.bot.change_presence(status=discord.Status.online, activity=status)
 
     @commands.command(aliases=["addevent"])
     async def addevent_command(self, ctx, *args):
