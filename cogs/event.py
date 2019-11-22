@@ -24,11 +24,11 @@ class Event(commands.Cog):
             CREATE TABLE IF NOT EXISTS events (id INTEGER PRIMARY KEY AUTOINCREMENT, message TEXT, days TEXT, time TEXT)
             """)
 
+            self.send_alert.start()
+            self.update_status.start()
+
         except Error as e:
             print(e)
-
-        self.send_alert.start()
-        self.update_status.start()
 
     @commands.Cog.listener()
     async def on_member_join(self, member):
@@ -40,14 +40,6 @@ class Event(commands.Cog):
             await member.dm_channel.send(file=discord.File('assets/images/op-4.png'))
             await member.dm_channel.send(file=discord.File('assets/images/op-5.png'))
 
-    @tasks.loop(seconds=10.0)
-    async def update_status(self):
-        hour = time.strftime("%H")
-        minute = time.strftime("%M")
-
-        status = discord.Streaming(name="{}:{} in ToW".format(hour, minute), url="https://twitch.tv/topic8")
-        await self.bot.change_presence(status=discord.Status.online, activity=status)
-
     @tasks.loop(seconds=1.0)
     async def send_alert(self):
         channel = self.bot.get_channel(config.channel_id)
@@ -56,9 +48,9 @@ class Event(commands.Cog):
         hour = time.strftime("%H")
         minute = time.strftime("%M")
         second = time.strftime("%S")
-        time = hour + ":" + minute
+        now = hour + ":" + minute
 
-        self.db_cursor.execute("SELECT * FROM events WHERE time = ?", [time])
+        self.db_cursor.execute("SELECT * FROM events WHERE time = ?", [now])
         response = self.db_cursor.fetchall()
 
         if not response:
@@ -73,6 +65,14 @@ class Event(commands.Cog):
             if day in days and second == "00":
                 await channel.send("<@&{}> {}".format(role, message))
 
+    @tasks.loop(seconds=10.0)
+    async def update_status(self):
+        hour = time.strftime("%H")
+        minute = time.strftime("%M")
+
+        status = discord.Streaming(name="{}:{} in ToW".format(hour, minute), url="https://twitch.tv/topic8")
+        await self.bot.change_presence(status=discord.Status.online, activity=status)
+
     @commands.command(aliases=["addevent"])
     async def addevent_command(self, ctx, *args):
         if len(args) == 3:
@@ -80,6 +80,10 @@ class Event(commands.Cog):
             self.db_cursor.execute("INSERT INTO events (message, days, time) VALUES (?, ?, ?)", [message, days, time])
             self.db.commit()
             await ctx.send("Your event has been added.")
+
+    @send_alert.before_loop
+    async def before_send_alert(self):
+        await self.bot.wait_until_ready()
 
 def setup(bot):
     bot.add_cog(Event(bot))
