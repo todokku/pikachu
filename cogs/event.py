@@ -24,10 +24,10 @@ class Event(commands.Cog):
             CREATE TABLE IF NOT EXISTS events (id INTEGER PRIMARY KEY AUTOINCREMENT, message TEXT, days TEXT, time TEXT)
             """)
 
-            self.send_alert.start()
-
         except Error as e:
             print(e)
+
+        self.update.start()
 
     @commands.Cog.listener()
     async def on_member_join(self, member):
@@ -40,7 +40,7 @@ class Event(commands.Cog):
             await member.dm_channel.send(file=discord.File('assets/images/op-5.png'))
 
     @tasks.loop(seconds=1.0)
-    async def send_alert(self):
+    async def update(self):
         channel = self.bot.get_channel(config.channel_id)
         role = config.role_id
         day = time.strftime("%a")
@@ -74,8 +74,8 @@ class Event(commands.Cog):
             self.db.commit()
             await ctx.send("Your event has been added.")
 
-    @send_alert.before_loop
-    async def before_send_alert(self):
+    @update.before_loop
+    async def before_update(self):
         await self.bot.wait_until_ready()
 
 def setup(bot):
