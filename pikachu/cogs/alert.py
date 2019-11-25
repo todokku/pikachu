@@ -59,7 +59,8 @@ class Alert(commands.Cog):
     async def addevent_command(self, ctx, *args):
         if len(args) == 3:
             message, days, time = args
-            self.db_cursor.execute("INSERT INTO events (message, days, time) VALUES (?,?,?)", [message, days, time])
+            self.db_cursor.execute("INSERT INTO events (message, days, time) VALUES (?,?,?)",
+                [message, days, time])
             self.db.commit()
             await ctx.send("Your event has been added.")
 
