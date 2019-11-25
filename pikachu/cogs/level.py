@@ -10,9 +10,8 @@ class Level(commands.Cog):
         self.bot = bot
         
         try:
-            cwd = os.path.abspath(os.getcwd())
-            db = os.path.join(cwd, config.db_name + ".db")
-            self.db = sqlite3.connect(db)
+            database = os.path.join(os.path.abspath(os.getcwd()), config.DB_NAME + ".db")
+            self.db = sqlite3.connect(database)
             self.db_cursor = self.db.cursor()
 
             self.db_cursor.execute("""
@@ -27,11 +26,11 @@ class Level(commands.Cog):
         if message.author.bot or message.content.startswith(config.command_prefix):
             return
 
-        self.db_cursor.execute("SELECT * FROM users WHERE id = ?",[message.author.id])
+        self.db_cursor.execute("SELECT * FROM users WHERE id=?", [message.author.id])
         response = self.db_cursor.fetchone()
 
         if not response:
-            self.db_cursor.execute("INSERT INTO users VALUES (?, ?, ?)", [message.author.id, 1, 0])
+            self.db_cursor.execute("INSERT INTO users VALUES (?,?,?)", [message.author.id, 1, 0])
             self.db.commit()
 
         user_id, user_level, user_exp = response
@@ -42,13 +41,13 @@ class Level(commands.Cog):
         if user_level > old_level:
             await message.channel.send("<@{}> has leveled up to {}!".format(user_id, user_level))
 
-        self.db_cursor.execute("UPDATE users SET level = ?, exp = ? WHERE id = ?",
+        self.db_cursor.execute("UPDATE users SET level=?, exp=? WHERE id=?",
             [user_level, user_exp, message.author.id])
         self.db.commit()
 
     @commands.command(aliases=["profile"])
     async def profile_command(self, ctx):
-        self.db_cursor.execute("SELECT * FROM users WHERE id = ?", [ctx.author.id])
+        self.db_cursor.execute("SELECT * FROM users WHERE id=?", [ctx.author.id])
         response = self.db_cursor.fetchone()
 
         if not response:
@@ -56,7 +55,7 @@ class Level(commands.Cog):
 
         user_id, user_level, user_exp = response
 
-        await ctx.send("<@{}>, you are level {}!".format(user_id, user_level, user_exp))
+        await ctx.send("<@{}>, you are level {}!".format(user_id, user_level))
 
 def setup(bot):
     bot.add_cog(Level(bot))
