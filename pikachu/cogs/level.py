@@ -23,7 +23,7 @@ class Level(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message):
-        if message.author.bot or message.content.startswith(config.command_prefix):
+        if message.author.bot or message.content.startswith(config.COMMAND_PREFIX):
             return
 
         self.db_cursor.execute("SELECT * FROM users WHERE id=?", [message.author.id])
@@ -34,9 +34,9 @@ class Level(commands.Cog):
             self.db.commit()
 
         user_id, user_level, user_exp = response
-        user_exp += config.exp_gained
+        user_exp += config.EXP_GAINED_PER_MSG
         old_level = user_level
-        user_level = int(user_exp / config.exp_leveled) + 1
+        user_level = int(user_exp / config.EXP_NEEDED_PER_LEVEL) + 1
         
         if user_level > old_level:
             await message.channel.send("<@{}> has leveled up to {}!".format(user_id, user_level))

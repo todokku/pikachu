@@ -30,8 +30,8 @@ class Event(commands.Cog):
 
     @tasks.loop(seconds=1.0)
     async def update(self):
-        channel = self.bot.get_channel(config.channel_id)
-        role = config.role_id
+        channel = self.bot.get_channel(config.CHANNEL_ID)
+        role = config.ROLE_ID
         day = time.strftime("%a")
         now = time.strftime("%H:%M")
         second = time.strftime("%S")

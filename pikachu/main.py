@@ -14,7 +14,7 @@ extensions = [
     "cogs.level"
 ]
 
-token = os.getenv("DISCORD_TOKEN")
+TOKEN = os.getenv("DISCORD_TOKEN")
 
 @bot.event
 async def on_ready():
@@ -32,4 +32,4 @@ async def on_member_join(member):
         await member.dm_channel.send(file=discord.File('assets/images/op-5.png'))
 
 if __name__ == "__main__":
-    bot.run(token, bot=True, reconnect=True)
+    bot.run(TOKEN, bot=True, reconnect=True)
