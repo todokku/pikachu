@@ -8,11 +8,17 @@ bot = commands.Bot(
     help_command=None
 )
 
+extensions = [
+    "cogs.dice",
+    "cogs.event",
+    "cogs.level"
+]
+
 token = os.getenv("DISCORD_TOKEN")
 
 @bot.event
 async def on_ready():
-    for extension in config.extensions:
+    for extension in extensions:
         bot.load_extension(extension)
 
 @bot.event
