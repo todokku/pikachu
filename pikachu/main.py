@@ -4,7 +4,7 @@ from configs import config
 from discord.ext import commands
 
 bot = commands.Bot(
-    command_prefix=config.command_prefix,
+    command_prefix=config.COMMAND_PREFIX,
     help_command=None
 )
 
