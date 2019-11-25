@@ -23,7 +23,7 @@ async def on_ready():
 
 @bot.event
 async def on_member_join(member):
-    if member.guild == bot.get_guild(config.guild_id):
+    if member.guild == bot.get_guild(config.GUILD_ID):
         await member.create_dm()
         await member.dm_channel.send(file=discord.File('assets/images/op-1.png'))
         await member.dm_channel.send(file=discord.File('assets/images/op-2.png'))
