@@ -15,9 +15,8 @@ class Event(commands.Cog):
         time.tzset()
 
         try:
-            cwd = os.path.abspath(os.getcwd())
-            db = os.path.join(cwd, config.db_name + ".db")
-            self.db = sqlite3.connect(db)
+            database = os.path.join(os.path.abspath(os.getcwd()), config.DB_NAME + ".db")
+            self.db = sqlite3.connect(database)
             self.db_cursor = self.db.cursor()
 
             self.db_cursor.execute("""
@@ -41,7 +40,7 @@ class Event(commands.Cog):
             status = discord.Streaming(name="{} in ToW".format(now), url="https://twitch.tv/topic8")
             await self.bot.change_presence(status=discord.Status.online, activity=status)
 
-        self.db_cursor.execute("SELECT * FROM events WHERE time = ?", [now])
+        self.db_cursor.execute("SELECT * FROM events WHERE time=?", [now])
         response = self.db_cursor.fetchall()
 
         if not response:
@@ -60,7 +59,7 @@ class Event(commands.Cog):
     async def addevent_command(self, ctx, *args):
         if len(args) == 3:
             message, days, time = args
-            self.db_cursor.execute("INSERT INTO events (message, days, time) VALUES (?, ?, ?)", [message, days, time])
+            self.db_cursor.execute("INSERT INTO events (message, days, time) VALUES (?,?,?)", [message, days, time])
             self.db.commit()
             await ctx.send("Your event has been added.")
 
