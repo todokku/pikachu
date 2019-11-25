@@ -6,7 +6,7 @@ from configs import config
 from discord.ext import commands, tasks
 from sqlite3 import Error
 
-class Event(commands.Cog):
+class Alert(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
@@ -68,4 +68,4 @@ class Event(commands.Cog):
         await self.bot.wait_until_ready()
 
 def setup(bot):
-    bot.add_cog(Event(bot))
+    bot.add_cog(Alert(bot))

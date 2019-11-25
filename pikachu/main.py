@@ -9,8 +9,8 @@ bot = commands.Bot(
 )
 
 extensions = [
+    "cogs.alert",
     "cogs.dice",
-    "cogs.event",
     "cogs.level"
 ]
 
