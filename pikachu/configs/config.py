@@ -5,8 +5,8 @@ db_name = "bot"
 exp_gained = 10
 exp_leveled = 100
 extensions = [
+    "cogs.dice",
     "cogs.event",
-    "cogs.games",
     "cogs.level"
 ]
 guild_id = 152557735089537024

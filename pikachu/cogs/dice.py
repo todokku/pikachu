@@ -1,7 +1,7 @@
 import random
 from discord.ext import commands
 
-class Games(commands.Cog):
+class Dice(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
@@ -15,4 +15,4 @@ class Games(commands.Cog):
             await ctx.send(", ".join(dice) + ". You rolled a **{}**!".format(sum(int(d) for d in dice)))
 
 def setup(bot):
-    bot.add_cog(Games(bot))
+    bot.add_cog(Dice(bot))
