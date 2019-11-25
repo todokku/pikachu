@@ -57,6 +57,9 @@ class Alert(commands.Cog):
 
     @commands.command(aliases=["addevent"])
     async def addevent_command(self, ctx, *args):
+        if not ctx.author.id in config.OWNER_IDS:
+            return
+
         if len(args) == 3:
             message, days, time = args
             self.db_cursor.execute("INSERT INTO events (message, days, time) VALUES (?,?,?)",
