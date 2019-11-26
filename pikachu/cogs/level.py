@@ -3,7 +3,6 @@ import psycopg2
 import sqlite3
 from configs import config
 from discord.ext import commands
-from sqlite3 import Error
 
 class Level(commands.Cog):
 
@@ -23,8 +22,8 @@ class Level(commands.Cog):
             );
             """)
 
-        except Error as e:
-            print(e)
+        except:
+            return
 
     @commands.Cog.listener()
     async def on_message(self, message):
