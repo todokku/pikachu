@@ -13,7 +13,7 @@ class Level(commands.Cog):
         self.db = psycopg2.connect(DATABASE_URL, sslmode="require")
         self.db_cursor = self.db.cursor()
         self.db_cursor.execute("""
-        CREATE TABLE IF NOT EXISTS users (
+        CREATE TABLE IF NOT EXISTS public.users (
             id INTEGER PRIMARY KEY,
             level INTEGER NOT NULL,
             exp INTEGER NOT NULL
@@ -25,11 +25,11 @@ class Level(commands.Cog):
         if message.author.bot or message.content.startswith(config.COMMAND_PREFIX):
             return
 
-        self.db_cursor.execute("SELECT * FROM users WHERE id=%s;", [message.author.id])
+        self.db_cursor.execute("SELECT * FROM public.users WHERE id=%s;", [message.author.id])
         response = self.db_cursor.fetchone()
 
         if not response:
-            self.db_cursor.execute("INSERT INTO users VALUES (%s,%s,%s)", [message.author.id, 1, 0])
+            self.db_cursor.execute("INSERT INTO public.users VALUES (%s,%s,%s)", [message.author.id, 1, 0])
             self.db.commit()
 
         user_id, user_level, user_exp = response
@@ -40,13 +40,13 @@ class Level(commands.Cog):
         if user_level > old_level:
             await message.channel.send("<@{}> has leveled up to {}!".format(user_id, user_level))
 
-        self.db_cursor.execute("UPDATE users SET level=%s, exp=%s WHERE id=%s",
+        self.db_cursor.execute("UPDATE public.users SET level=%s, exp=%s WHERE id=%s",
             [user_level, user_exp, message.author.id])
         self.db.commit()
 
     @commands.command(aliases=["profile"])
     async def profile_command(self, ctx):
-        self.db_cursor.execute("SELECT * FROM users WHERE id=%s", [ctx.author.id])
+        self.db_cursor.execute("SELECT * FROM public.users WHERE id=%s", [ctx.author.id])
         response = self.db_cursor.fetchone()
 
         if not response:
