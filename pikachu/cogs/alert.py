@@ -13,7 +13,7 @@ class Alert(commands.Cog):
         os.environ["TZ"] = "US/Eastern"
         # os.environ["TZ"] = "US/Central"
         time.tzset()
-
+        
         try:
             database = os.path.join(os.path.abspath(os.getcwd()), config.DB_NAME + ".db")
             self.db = sqlite3.connect(database)
