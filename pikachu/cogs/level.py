@@ -12,8 +12,8 @@ class Level(commands.Cog):
         
         self.db = psycopg2.connect(DATABASE_URL, sslmode="require")
         self.db_cursor = self.db.cursor()
-        self.db_cursor.execute("CREATE SCHEMA IF NOT EXIST bot;")
         self.db_cursor.execute("""
+        CREATE SCHEMA IF NOT EXISTS bot;
         CREATE TABLE IF NOT EXISTS bot.users (
             id TEXT PRIMARY KEY,
             level INTEGER NOT NULL,
