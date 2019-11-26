@@ -1,27 +1,27 @@
 import discord
 import os
-import sqlite3
+import psycopg2
 import time
 from configs import config
 from discord.ext import commands, tasks
-from sqlite3 import Error
 
 class Alert(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
 
-        try:
-            database = os.path.join(os.path.abspath(os.getcwd()), config.DB_NAME + ".db")
-            self.db = sqlite3.connect(database)
-            self.db_cursor = self.db.cursor()
+        self.db = psycopg2.connect(config.DATABASE_URL, sslmode="require")
+        self.db_cursor = self.db.cursor()
 
-            self.db_cursor.execute("""
-            CREATE TABLE IF NOT EXISTS events (id INTEGER PRIMARY KEY AUTOINCREMENT, message TEXT, days TEXT, time TEXT)
-            """)
-
-        except Error as e:
-            print(e)
+        self.db_cursor.execute("""
+        CREATE SCHEMA IF NOT EXISTS bot;
+        CREATE TABLE IF NOT EXISTS bot.events (
+            id SERIAL,
+            message TEXT NOT NULL,
+            days TEXT NOT NULL,
+            time TEXT NOT NULL
+        );
+        """)
 
         self.update.start()
 
@@ -37,7 +37,7 @@ class Alert(commands.Cog):
             status = discord.Streaming(name="{} in ToW".format(now), url="https://twitch.tv/topic8")
             await self.bot.change_presence(status=discord.Status.online, activity=status)
 
-        self.db_cursor.execute("SELECT * FROM events WHERE time=?", [now])
+        self.db_cursor.execute("SELECT * FROM bot.events WHERE time=%s", [now])
         response = self.db_cursor.fetchall()
 
         if not response:
@@ -59,7 +59,7 @@ class Alert(commands.Cog):
 
         if len(args) == 3:
             message, days, time = args
-            self.db_cursor.execute("INSERT INTO events (message, days, time) VALUES (?,?,?)",
+            self.db_cursor.execute("INSERT INTO bot.events (message, days, time) VALUES (%s,%s,%s)",
                 [message, days, time])
             self.db.commit()
             await ctx.send("Your event has been added.")
