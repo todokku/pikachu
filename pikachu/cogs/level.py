@@ -29,7 +29,7 @@ class Level(commands.Cog):
         if message.author.bot or message.content.startswith(config.COMMAND_PREFIX):
             return
 
-        self.db_cursor.execute("SELECT * FROM users WHERE id=%s", [message.author.id])
+        self.db_cursor.execute("SELECT * FROM users WHERE id=%s;", [message.author.id])
         response = self.db_cursor.fetchone()
 
         if not response:
