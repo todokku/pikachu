@@ -8,7 +8,8 @@ class Level(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         
-        self.db = psycopg2.connect(config.DATABASE_URL, sslmode="require")
+        DATABASE_URL = os.getenv("DATABASE_URL")
+        self.db = psycopg2.connect(DATABASE_URL, sslmode="require")
         self.db_cursor = self.db.cursor()
         self.db_cursor.execute("""
         CREATE SCHEMA IF NOT EXISTS bot;
