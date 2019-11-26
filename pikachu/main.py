@@ -19,6 +19,10 @@ TOKEN = os.getenv("DISCORD_TOKEN")
 
 @bot.event
 async def on_ready():
+    os.environ["TZ"] = "US/Eastern"
+    # os.environ["TZ"] = "US/Central"
+    time.tzset()
+
     now = time.strftime("%H:%M")
     status = discord.Streaming(name="{} in ToW".format(now), url="https://twitch.tv/topic8")
     await bot.change_presence(status=discord.Status.online, activity=status)
