@@ -13,13 +13,12 @@ class Level(commands.Cog):
         self.db = psycopg2.connect(DATABASE_URL, sslmode="require")
         self.db_cursor = self.db.cursor()
         self.db_cursor.execute("""
-        CREATE TABLE IF NOT EXISTS bot.users (
+        CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY,
             level INTEGER NOT NULL,
             exp INTEGER NOT NULL
         );
         """)
-        self.db.commit()
 
     @commands.Cog.listener()
     async def on_message(self, message):
