@@ -1,6 +1,5 @@
 import os
 import psycopg2
-import sqlite3
 from configs import config
 from discord.ext import commands
 
