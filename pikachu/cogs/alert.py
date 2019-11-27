@@ -65,6 +65,34 @@ class Alert(commands.Cog):
             self.db.commit()
             await ctx.send("Your event has been added.")
 
+    @commands.command(aliases=["delevent"])
+    async def delevent_command(self, ctx, *args):
+        if not ctx.author.id in config.OWNER_IDS:
+            return
+
+        if len(args) == 1:
+            self.db_cursor.execute("DELETE FROM bot.events WHERE id=%s;", [args[0]])
+            await ctx.send("Your event has been deleted.")
+
+    @commands.command(aliases=["viewevent"])
+    async def viewevent_command(self, ctx):
+        if not ctx.author.id in config.OWNER_IDS:
+            return
+
+        self.db_cursor.execute("SELECT * FROM bot.events")
+        response = self.db_cursor.fetchall()
+
+        if not response:
+            return
+
+        events = [event for event in response]
+        message = ""
+
+        for event in events:
+            message += "id: {}, message: {}\n".format(event[0], event[1])
+
+        await ctx.send(message)
+
     @update.before_loop
     async def before_update(self):
         await self.bot.wait_until_ready()
