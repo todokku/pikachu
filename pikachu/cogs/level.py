@@ -55,7 +55,7 @@ class Level(commands.Cog):
             return
 
         user_id, user_level, user_exp = response
-        next_level_exp = (config.EXP_GAINED_PER_MSG * (user_level+1) ** 2 - config.EXP_GAINED_PER_MSG * (user_level+1)) - (2*EXP_GAINED_PER_MSG)
+        next_level_exp = (config.EXP_GAINED_PER_MSG * (user_level+1) ** 2 - config.EXP_GAINED_PER_MSG * (user_level+1)) - (2*config.EXP_GAINED_PER_MSG)
 
         await ctx.send("<@{}>, you are level {}[{}/{}]!".format(user_id, user_level, user_exp, next_level_exp))
 
