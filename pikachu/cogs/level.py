@@ -53,8 +53,9 @@ class Level(commands.Cog):
             return
 
         user_id, user_level, user_exp = response
+        next_level_exp = (EXP_GAINED_PER_MSG * (level+1) ** 2 - EXP_GAINED_PER_MSG * (level+1)) - (2*EXP_GAINED_PER_MSG)
 
-        await ctx.send("<@{}>, you are level {}!".format(user_id, user_level))
+        await ctx.send("<@{}>, you are level {}[{}/{}]!".format(user_id, user_level, user_exp, next_level_exp))
 
 def setup(bot):
     bot.add_cog(Level(bot))
