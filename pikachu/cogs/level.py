@@ -34,10 +34,10 @@ class Level(commands.Cog):
 
         user_id, user_level, user_exp = response
         user_exp += config.EXP_GAINED_PER_MSG
-        old_level = user_level
-        user_level = int(user_exp / config.EXP_NEEDED_PER_LEVEL) + 1
+        next_level_exp = (EXP_GAINED_PER_MSG * (level+1) ** 2 - EXP_GAINED_PER_MSG * (level+1)) - (2*EXP_GAINED_PER_MSG)
         
-        if user_level > old_level:
+        if user_exp > next_level_exp:
+            user_level += 1
             await message.channel.send("<@{}> has leveled up to {}!".format(user_id, user_level))
 
         self.db_cursor.execute("UPDATE bot.users SET level=%s, exp=%s WHERE id=%s",
