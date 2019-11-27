@@ -38,7 +38,7 @@ class Level(commands.Cog):
         user_exp += config.EXP_GAINED_PER_MSG
         next_level_exp = (config.EXP_GAINED_PER_MSG * (user_level+1) ** 2 - config.EXP_GAINED_PER_MSG * (user_level+1))
         
-        if user_exp > next_level_exp:
+        if user_exp >= next_level_exp:
             user_level += 1
             await message.channel.send("<@{}> has leveled up to {}!".format(user_id, user_level))
 
@@ -56,9 +56,6 @@ class Level(commands.Cog):
 
         user_id, user_level, user_exp = response
         next_level_exp = (config.EXP_GAINED_PER_MSG * (user_level+1) ** 2 - config.EXP_GAINED_PER_MSG * (user_level+1))
-
-        if user_exp == next_level_exp:
-            next_level_exp = (config.EXP_GAINED_PER_MSG * (user_level+2) ** 2 - config.EXP_GAINED_PER_MSG * (user_level+2))
 
         await ctx.send("<@{}>, you are level {}[{}/{}]!".format(user_id, user_level, user_exp, next_level_exp))
 
