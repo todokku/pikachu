@@ -29,7 +29,7 @@ class Level(commands.Cog):
         response = self.db_cursor.fetchone()
 
         if not response:
-            self.db_cursor.execute("INSERT INTO bot.users VALUES (%s,%s,%s)", [str(message.author.id), 1, 0])
+            self.db_cursor.execute("INSERT INTO bot.users VALUES (%s,%s,%s);", [str(message.author.id), 1, 0])
             self.db.commit()
             self.db_cursor.execute("SELECT * FROM bot.users WHERE id=%s;", [message.author.id])
             response = self.db_cursor.fetchone()
@@ -42,13 +42,13 @@ class Level(commands.Cog):
             user_level += 1
             await message.channel.send("<@{}> has leveled up to {}!".format(user_id, user_level))
 
-        self.db_cursor.execute("UPDATE bot.users SET level=%s, exp=%s WHERE id=%s",
+        self.db_cursor.execute("UPDATE bot.users SET level=%s, exp=%s WHERE id=%s;",
             [user_level, user_exp, str(message.author.id)])
         self.db.commit()
 
     @commands.command(aliases=["profile"])
     async def profile_command(self, ctx):
-        self.db_cursor.execute("SELECT * FROM bot.users WHERE id=%s", [str(ctx.author.id)])
+        self.db_cursor.execute("SELECT * FROM bot.users WHERE id=%s;", [str(ctx.author.id)])
         response = self.db_cursor.fetchone()
 
         if not response:

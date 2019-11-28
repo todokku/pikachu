@@ -38,7 +38,7 @@ class Alert(commands.Cog):
             status = discord.Streaming(name="{} in ToW".format(now), url="https://twitch.tv/topic8")
             await self.bot.change_presence(status=discord.Status.online, activity=status)
 
-        self.db_cursor.execute("SELECT * FROM bot.events WHERE time=%s", [now])
+        self.db_cursor.execute("SELECT * FROM bot.events WHERE time=%s;", [now])
         response = self.db_cursor.fetchall()
 
         if not response:
@@ -60,7 +60,7 @@ class Alert(commands.Cog):
 
         if len(args) == 3:
             message, days, time = args
-            self.db_cursor.execute("INSERT INTO bot.events (message, days, time) VALUES (%s,%s,%s)",
+            self.db_cursor.execute("INSERT INTO bot.events (message, days, time) VALUES (%s,%s,%s);",
                 [message, days, time])
             self.db.commit()
             await ctx.send("Your event has been added.")
@@ -79,7 +79,7 @@ class Alert(commands.Cog):
         if not ctx.author.id in config.OWNER_IDS:
             return
 
-        self.db_cursor.execute("SELECT * FROM bot.events")
+        self.db_cursor.execute("SELECT * FROM bot.events;")
         response = self.db_cursor.fetchall()
 
         if not response:
