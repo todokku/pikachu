@@ -31,7 +31,7 @@ class Level(commands.Cog):
         if not response:
             self.db_cursor.execute("INSERT INTO bot.users VALUES (%s,%s,%s);", [str(message.author.id), 1, 0])
             self.db.commit()
-            self.db_cursor.execute("SELECT * FROM bot.users WHERE id=%s;", [message.author.id])
+            self.db_cursor.execute("SELECT * FROM bot.users WHERE id=%s;", [str(message.author.id)])
             response = self.db_cursor.fetchone()
 
         user_id, user_level, user_exp = response
