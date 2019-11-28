@@ -67,30 +67,32 @@ class Level(commands.Cog):
         if not ctx.message.mentions:
             return
 
-        users = [user for user in ctx.message.mentions]
+        if len(args) >= 2:
+            users = [user for user in ctx.message.mentions]
 
-        for user in users:
-            self.db_cursor.execute("SELECT * FROM bot.users WHERE id=%s;", [str(user.id)])
-            response = self.db_cursor.fetchone()
+            for user in users:
+                self.db_cursor.execute("SELECT * FROM bot.users WHERE id=%s;", [str(user.id)])
+                response = self.db_cursor.fetchone()
 
-            if not response:
-                pass
+                if not response:
+                    pass
 
-            user_id, user_level, user_exp = response
-            user_exp += int(args[1])
+                user_id, user_level, user_exp = response
 
-            while True:
-                next_level_exp = (config.EXP_GAINED_PER_MSG * (user_level+1) ** 2 - config.EXP_GAINED_PER_MSG * (user_level+1))
+                user_exp += int(args[1])
 
-                if next_level_exp > user_exp:
-                    break
+                while True:
+                    next_level_exp = (config.EXP_GAINED_PER_MSG * (user_level+1) ** 2 - config.EXP_GAINED_PER_MSG * (user_level+1))
 
-                user_level += 1
+                    if next_level_exp > user_exp:
+                        break
 
-            self.db_cursor.execute("UPDATE bot.users SET level=%s, exp=%s WHERE id=%s;", [user_level, user_exp, str(user.id)])
-            self.db.commit()
+                    user_level += 1
 
-        await ctx.send("Exp has been given out.")
+                self.db_cursor.execute("UPDATE bot.users SET level=%s, exp=%s WHERE id=%s;", [user_level, user_exp, str(user.id)])
+                self.db.commit()
+
+            await ctx.send("Exp has been given out.")
 
 def setup(bot):
     bot.add_cog(Level(bot))
