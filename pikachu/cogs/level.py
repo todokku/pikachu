@@ -70,7 +70,7 @@ class Level(commands.Cog):
         users = [user for user in ctx.message.mentions]
 
         for user in users:
-            self.db_cursor.execute("SELECT * FROM users WHERE id=%s;", [str(user.id)])
+            self.db_cursor.execute("SELECT * FROM bot.users WHERE id=%s;", [str(user.id)])
             response = self.db_cursor.fetchone()
 
             if not response:
@@ -87,7 +87,7 @@ class Level(commands.Cog):
 
                 user_level += 1
 
-            self.db_cursor.execute("UPDATE users SET level=%s, exp=%s WHERE id=%s;", [user_level, user_exp, user.id])
+            self.db_cursor.execute("UPDATE bot.users SET level=%s, exp=%s WHERE id=%s;", [user_level, user_exp, user.id])
             self.db.commit()
 
         await ctx.send("Exp has been given out.")
