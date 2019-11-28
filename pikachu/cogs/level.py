@@ -75,7 +75,7 @@ class Level(commands.Cog):
                 response = self.db_cursor.fetchone()
 
                 if not response:
-                    pass
+                    return
 
                 user_id, user_level, user_exp = response
 
