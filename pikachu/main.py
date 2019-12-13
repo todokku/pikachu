@@ -12,7 +12,8 @@ bot = commands.Bot(
 extensions = [
     "cogs.alert",
     "cogs.dice",
-    "cogs.level"
+    "cogs.level",
+    "cogs.time"
 ]
 
 TOKEN = os.getenv("DISCORD_TOKEN")
