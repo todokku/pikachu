@@ -72,6 +72,7 @@ class Alert(commands.Cog):
 
         if len(args) == 1:
             self.db_cursor.execute("DELETE FROM bot.events WHERE id=%s;", [args[0]])
+            self.db.commit()
             await ctx.send("Your event has been deleted.")
 
     @commands.command(aliases=["viewevent"])
