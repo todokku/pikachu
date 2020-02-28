@@ -110,7 +110,7 @@ class Level(commands.Cog):
 
         for res in response:
             user_id, user_level, user_exp = res
-            user = self.bot.fetch_user(user_id)
+            user = await self.bot.fetch_user(user_id)
 
             embed.add_field(
                 name="{}#{}".format(user.name, user.discriminator),
@@ -119,19 +119,6 @@ class Level(commands.Cog):
             )
 
         await ctx.send(embed=embed)
-
-    @commands.command(aliases=["test"])
-    async def test_command(self, ctx):
-        self.db_cursor.execute("SELECT * FROM bot.users WHERE id=%s", [str(ctx.author.id)])
-        response = self.db_cursor.fetchone()
-
-        if not response:
-            return
-
-        user_id, user_level, user_exp = res
-        user = self.bot.get_user(user_id)
-
-        await ctx.send("{}#{}: {}".format(user.name, user.discriminator, user_level))
 
 def setup(bot):
     bot.add_cog(Level(bot))
