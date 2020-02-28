@@ -118,7 +118,7 @@ class Level(commands.Cog):
                 inline=True
             )
 
-        await ctx.send(embed)
+        await ctx.send(embed=embed)
 
 def setup(bot):
     bot.add_cog(Level(bot))
