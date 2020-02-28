@@ -129,7 +129,7 @@ class Level(commands.Cog):
             return
 
         user_id, user_level, user_exp = res
-        user = self.bot.fetch_user(user_id)
+        user = self.bot.get_user(user_id)
 
         await ctx.send("{}#{}: {}".format(user.name, user.discriminator, user_level))
 
