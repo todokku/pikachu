@@ -97,12 +97,12 @@ class Level(commands.Cog):
 
     @commands.command(aliases=["ranking"])
     async def ranking_command(self, ctx):
-        self.db_cursor.execute("SELECT * FROM bot.users WHERE id!=%s ORDER BY exp DESC LIMIT 15;", [str(config.OWNER_ID)])
-        response = self.db_cursor.fetchmany(15)
+        self.db_cursor.execute("SELECT * FROM bot.users WHERE id!=%s ORDER BY exp DESC LIMIT 10;", [str(config.OWNER_ID)])
+        response = self.db_cursor.fetchmany(10)
         rank = 1
 
         embed = discord.Embed(
-            title="Top 15 Ranking",
+            title="Top 10 Ranking",
             color=0xffff00
         )
 
@@ -115,8 +115,8 @@ class Level(commands.Cog):
 
             embed.add_field(
                 name="{} - {}#{}".format(rank, user.name, user.discriminator),
-                value="Lvl: {} | Exp: {}".format(user_level, user_exp),
-                inline=True
+                value="Level: {} | Experience: {}".format(user_level, user_exp),
+                inline=False
             )
 
             rank += 1
