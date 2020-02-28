@@ -97,7 +97,7 @@ class Level(commands.Cog):
 
     @commands.command(aliases=["ranking"])
     async def ranking_command(self, ctx):
-        self.db_cursor.execute("SELECT * FROM bot.users WHERE id!=%s ORDER BY exp DESC LIMIT 10;", [str(owner in config.OWNER_IDS)])
+        self.db_cursor.execute("SELECT * FROM bot.users WHERE id!=%s ORDER BY exp DESC LIMIT 10;", [str([owner in config.OWNER_IDS])])
         response = self.db_cursor.fetchmany(10)
 
         embed = discord.Embed(
