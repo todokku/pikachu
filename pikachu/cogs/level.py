@@ -114,7 +114,7 @@ class Level(commands.Cog):
 
             embed.add_field(
                 name="{}#{}".format(user.name, user.discriminator),
-                value="Lvl: {} | Exp: {}".format(user_level, user_exp),
+                value="Level: {} | Experience: {}".format(user_level, user_exp),
                 inline=False
             )
 
