@@ -99,7 +99,11 @@ class Level(commands.Cog):
     async def ranking_command(self, ctx):
         self.db_cursor.execute("SELECT * FROM bot.users WHERE id!=%s ORDER BY exp DESC LIMIT 10;", [str(config.OWNER_IDS)])
         response = self.db_cursor.fetchmany(10)
-        message = ""
+
+        embed = discord.Embed(
+            title="Top 10 Ranking",
+            color=0xffff00
+        )
 
         if not response:
             return
@@ -108,9 +112,13 @@ class Level(commands.Cog):
             user_id, user_level, user_exp = res
             user = self.bot.get_user(user_id)
 
-            message += "{}#{} [Lvl {}]\n".format(user.name, user.discriminator, user_level)
+            embed.add_field(
+                name="{}".format(user_id),
+                value="Level {}".format(user_level),
+                inline=True
+            )
 
-        await ctx.send(message)
+        await ctx.send(embed=embed)
 
 def setup(bot):
     bot.add_cog(Level(bot))
