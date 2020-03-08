@@ -20,8 +20,8 @@ TOKEN = os.getenv("DISCORD_TOKEN")
 
 @bot.event
 async def on_ready():
-    os.environ["TZ"] = "US/Eastern"
-    # os.environ["TZ"] = "US/Central"
+    # os.environ["TZ"] = "US/Eastern"
+    os.environ["TZ"] = "US/Central"
     time.tzset()
 
     now = time.strftime("%H:%M")
