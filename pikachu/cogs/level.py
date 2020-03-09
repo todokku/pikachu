@@ -60,7 +60,7 @@ class Level(commands.Cog):
 
         await ctx.send("<@{}>, you are level {}[{}/{}]!".format(user_id, user_level, user_exp, next_level_exp))
 
-    @commands.command(aliases=["giveexp"])
+    @commands.command(aliases=["give"])
     async def giveexp_command(self, ctx, *args):
         if not ctx.author.id in config.OWNER_IDS:
             return
@@ -93,7 +93,7 @@ class Level(commands.Cog):
                 self.db_cursor.execute("UPDATE bot.users SET level=%s, exp=%s WHERE id=%s;", [user_level, user_exp, str(user.id)])
                 self.db.commit()
 
-            await ctx.send("Exp has been given out.")
+            await ctx.send("Experience has been distributed.")
 
     @commands.command(aliases=["ranking"])
     async def ranking_command(self, ctx):
@@ -122,6 +122,25 @@ class Level(commands.Cog):
             rank += 1
 
         await ctx.send(embed=embed)
+
+    @commands.command(aliases=["reset"])
+    async def reset_command(self, ctx):
+        if not ctx.author.id in config.OWNER_IDS:
+            return
+
+        if not ctx.message.mentions:
+            return
+
+        users = [user for user in ctx.message.mentions]
+
+        for user in users:
+            user_level = 0
+            user_exp = 0
+
+            self.db_cursor.execute("UPDATE bot.users SET level=%s, exp=%s WHERE id=%s;", [user_level, user_exp, str(user.id)])
+            self.db.commit()
+
+            await ctx.send("User profile(s) have been reset.")
 
 def setup(bot):
     bot.add_cog(Level(bot))
